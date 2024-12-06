@@ -18,4 +18,6 @@ async function main() {
     const { User, Material, Supplier, Finish, Thickness, Log } = initializeModels();
 }
 
-main();
+
+
+module.exports = main;

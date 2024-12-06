@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
-const {initializeModels} = require("./createModels.js");
+const { initializeModels } = require("./createModels.js");
 
 // Connect to MongoDB
 async function connectDB() {

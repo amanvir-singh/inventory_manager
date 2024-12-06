@@ -1,108 +1,12 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  role: {
-    type: String,
-    enum: ["admin", "Editor", "Manager", "Stock Officer", "Reader"],
-    default: "Reader",
-  },
-});
+const userSchema = require('./models/users');
+const materialSchema = require('./models/materials');
+const supplierSchema = require('./models/suppliers');
+const finishesSchema = require('./models/finishes');
+const thicknessSchema = require('./models/thicknesses');
+const logSchema = require('./models/logs');
 
-const supplierSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  code: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-});
-
-const finishesSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-      },
-      code: {
-        type: String,
-        required: true,
-        unique: true,
-      },
-});
-
-const thicknessSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-      },
-      code: {
-        type: String,
-        required: true,
-        unique: true,
-      },
-});
-
-const logSchema = new mongoose.Schema({
-    user: {
-      type: String,
-      required: true
-    },
-    action: {
-      type: String,
-      required: true
-    },
-    comment: {
-      type: String,
-      required: false 
-    },
-    time: {
-      type: Date,
-      default: Date.now 
-    }
-  });
-
-const materialSchema = new mongoose.Schema({
-  code: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  name: {
-    type: String,
-    required: true,
-  },
-  length: {
-    type: Number,
-    required: true,
-  },
-  width: {
-    type: Number,
-    required: true,
-  },
-  supplier: {
-    type: String,
-    required: true,
-  },
-  finish: {
-    type: String,
-    required: true,
-  },
-  qty: {
-    type: Number,
-    default: 0,
-  },
-  location: {
-    type: [[String]],
-  },
-  qty_per_location: {
-    type: [Number],
-  },
-});
 
 
 function initializeModels() {
@@ -136,4 +40,14 @@ function initializeModels() {
     };
   }
 
-module.exports = initializeModels;
+  module.exports = {
+    initializeModels,
+    schemas: {
+      userSchema,
+      materialSchema,
+      supplierSchema,
+      finishesSchema,
+      thicknessSchema,
+      logSchema
+    }
+  };

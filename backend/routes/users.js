@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
 
 const { schemas } = require("../createModels");
 
@@ -52,6 +53,36 @@ router.get("/:id", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+// Login 
+router.post("/login", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    // Find user by username
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(400).json({ message: "Invalid username or password" });
+    }
+
+    // Check password
+    if (password != user.password) {
+      return res.status(400).json({ message: "Invalid username or password" });
+    }
+
+    // Create and assign a token
+    const token = jwt.sign(
+      { _id: user._id, username: user.username, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    res.json({ success: true, message: "Logged in successfully", user: { token, userId: user._id, username: user.username, role: user.role } });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 
 // Update
 router.put("/:id", async (req, res) => {

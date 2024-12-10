@@ -6,18 +6,23 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import Header from "./Components/Header";
 import Signup from "./Pages/Signup";
+import Login from "./Pages/Login";
+import { AuthProvider } from "./Components/AuthContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <Router>
-      <Header />
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/signup" element={<Signup />} />
-      </Routes>
-    </Router>
-    <App />
+    <AuthProvider>
+      <Router>
+        <Header />
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </Router>
+      <App />
+    </AuthProvider>
   </React.StrictMode>
 );
 

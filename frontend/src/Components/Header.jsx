@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../css/Header.scss";
 import logo from "../assets/img/Ambienti-Moderne-NoBG.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../Components/AuthContext";
 
 const Header = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, username, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
-    // Implement login logic
-    //setIsLoggedIn(!isLoggedIn);
+  const handleLogout = () => {
+    logout();
+    navigate("/");
   };
 
   return (
@@ -50,21 +52,17 @@ const Header = () => {
         <div className="header__actions">
           {!isLoggedIn ? (
             <>
-              <Link>
-              <button className="header__login-btn" onClick={handleLogin}>
-                Login
-              </button></Link>
-              <Link to="/signup">
-              <button className="header__signup-btn" onClick={handleLogin}>
-                Signup
-              </button>
+              <Link to="/login">
+                <button className="header__login-btn">Login</button>
               </Link>
-              
+              <Link to="/signup">
+                <button className="header__signup-btn">Signup</button>
+              </Link>
             </>
           ) : (
             <div className="header__user-profile">
-              <span>Welcome, User</span>
-              <button className="header__logout-btn" onClick={handleLogin}>
+              <span>Welcome, {username}</span>
+              <button className="header__logout-btn" onClick={handleLogout}>
                 Logout
               </button>
             </div>

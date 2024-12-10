@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import "../css/Header.scss";
-import logo from "../assets/img/Ambienti-Moderne-LOGO.png";
+import logo from "../assets/img/Ambienti-Moderne-NoBG.png";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleLogin = () => {
     // Implement login logic
-    setIsLoggedIn(!isLoggedIn);
+    //setIsLoggedIn(!isLoggedIn);
   };
 
   return (
@@ -49,12 +50,16 @@ const Header = () => {
         <div className="header__actions">
           {!isLoggedIn ? (
             <>
+              <Link>
               <button className="header__login-btn" onClick={handleLogin}>
                 Login
-              </button>
+              </button></Link>
+              <Link to="/signup">
               <button className="header__signup-btn" onClick={handleLogin}>
                 Signup
               </button>
+              </Link>
+              
             </>
           ) : (
             <div className="header__user-profile">

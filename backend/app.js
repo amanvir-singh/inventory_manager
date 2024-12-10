@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
+const cors = require('cors');
 
 const connectDB = require('./database');
 const usersRoutes = require('./routes/users');
@@ -16,6 +17,13 @@ const app = express();
 // Connect to MongoDB
 connectDB();
 
+app.use(cors({
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+  
+
 // Middleware
 app.use(express.json());
 
@@ -29,7 +37,7 @@ app.use('./thicknesses', thicknessesRoutes);
 
 
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 

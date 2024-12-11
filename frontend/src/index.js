@@ -8,9 +8,12 @@ import Header from "./Components/Header";
 import Signup from "./Pages/Signup";
 import Login from "./Pages/Login";
 import { AuthProvider } from "./Components/AuthContext";
-import SupplierList from "./Pages/SuppliersList";
-import AddSupplier from "./Pages/AddSupplier";
-import EditSupplier from "./Pages/EditSupplier";
+import SupplierList from "./Pages/Suppliers/SuppliersList";
+import AddSupplier from "./Pages/Suppliers/AddSupplier";
+import EditSupplier from "./Pages/Suppliers/EditSupplier";
+import FinishesList from "./Pages/Finishes/FinishesList";
+import AddFinish from "./Pages/Finishes/AddFinish";
+import EditFinish from "./Pages/Finishes/EditFinish";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -25,6 +28,9 @@ root.render(
           <Route path="/manage/suppliersList" element={<SupplierList />} />
           <Route path="/add-supplier" element={<AddSupplier />} />
           <Route path="/edit-supplier/:id" element={<EditSupplier />} />
+          <Route path="/manage/finishesList" element={<FinishesList />} />
+          <Route path="/add-finish" element={<AddFinish />} />
+          <Route path="/edit-finish/:id" element={<EditFinish />} />
         </Routes>
       </Router>
     </AuthProvider>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import '../css/SupplierForm.scss';
+import '../../css/Suppliers/SupplierForm.scss';
 
 const EditSupplier = () => {
   const [name, setName] = useState('');

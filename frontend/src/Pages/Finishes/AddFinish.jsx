@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import '../css/SupplierForm.scss';
+import '../../css/Finishes/FinishForm.scss';
 
-const AddSupplier = () => {
+const AddFinish = () => {
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
   const navigate = useNavigate();
@@ -11,16 +11,16 @@ const AddSupplier = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${process.env.REACT_APP_ROUTE}/suppliers/add`, { name, code });
-      navigate('/manage/suppliersList');
+      await axios.post(`${process.env.REACT_APP_ROUTE}/finishes/add`, { name, code });
+      navigate('/manage/finishesList');
     } catch (error) {
-      console.error('Error adding supplier:', error);
+      console.error('Error adding finish:', error);
     }
   };
 
   return (
-    <div className="supplier-form">
-      <h1>Add Supplier</h1>
+    <div className="finish-form">
+      <h1>Add Finish</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name">Name:</label>
@@ -42,10 +42,10 @@ const AddSupplier = () => {
             required
           />
         </div>
-        <button type="submit">Add Supplier</button>
+        <button type="submit">Add Finish</button>
       </form>
     </div>
   );
 };
 
-export default AddSupplier;
+export default AddFinish;

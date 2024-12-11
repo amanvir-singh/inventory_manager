@@ -53,7 +53,7 @@ const Header = () => {
             {showManageDropdown && (
               <ul className="dropdown-menu">
                 <li><a href="/manage/materials">Materials</a></li>
-                <li><a href="/manage/finishes">Finishes</a></li>
+                <li><a href="/manage/finishesList">Finishes</a></li>
                 <li><a href="/manage/suppliersList">Suppliers</a></li>
                 <li><a href="/manage/thicknesses">Thicknesses</a></li>
                 <li><a href="/manage/users">Users</a></li>

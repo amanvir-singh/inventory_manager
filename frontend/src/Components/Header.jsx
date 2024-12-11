@@ -6,11 +6,16 @@ import { AuthContext } from "../Components/AuthContext";
 
 const Header = () => {
   const { isLoggedIn, username, logout } = useContext(AuthContext);
+  const [showManageDropdown, setShowManageDropdown] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
     navigate("/");
+  };
+
+  const toggleManageDropdown = () => {
+    setShowManageDropdown(!showManageDropdown);
   };
 
   return (
@@ -43,9 +48,19 @@ const Header = () => {
             <li>
               <a href="/search">Search</a>
             </li>
-            <li>
-              <a href="/add">Add</a>
-            </li>
+            {isLoggedIn ?(<li className="manage-dropdown">
+            <a href="#" onClick={toggleManageDropdown}>Manage</a>
+            {showManageDropdown && (
+              <ul className="dropdown-menu">
+                <li><a href="/manage/materials">Materials</a></li>
+                <li><a href="/manage/finishes">Finishes</a></li>
+                <li><a href="/manage/suppliersList">Suppliers</a></li>
+                <li><a href="/manage/thicknesses">Thicknesses</a></li>
+                <li><a href="/manage/users">Users</a></li>
+                <li><a href="/manage/logs">Logs</a></li>
+              </ul>
+            )}
+          </li>):("")}
           </ul>
         </nav>
 

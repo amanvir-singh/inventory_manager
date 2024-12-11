@@ -29,11 +29,11 @@ app.use(express.json());
 
 // Routes
 app.use('/users', usersRoutes);
-app.use('./finishes', finishesRoutes);
-app.use('./logs', logsRoutes);
-app.use('./materials', materialsRoutes);
-app.use('./suppliers', suppliersRoutes);
-app.use('./thicknesses', thicknessesRoutes);
+app.use('/finishes', finishesRoutes);
+app.use('/logs', logsRoutes);
+app.use('/materials', materialsRoutes);
+app.use('/suppliers', suppliersRoutes);
+app.use('/thicknesses', thicknessesRoutes);
 
 
 

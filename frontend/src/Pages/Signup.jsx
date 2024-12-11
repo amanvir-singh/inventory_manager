@@ -73,7 +73,7 @@ const Signup = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:3001/users/add", {
+      const response = await axios.post(`${process.env.REACT_APP_ROUTE}/users/add`, {
         username,
         email,
         password,

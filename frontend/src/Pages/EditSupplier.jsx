@@ -15,7 +15,7 @@ const EditSupplier = () => {
 
   const fetchSupplier = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/suppliers/${id}`);
+      const response = await axios.get(`${process.env.REACT_APP_ROUTE}/suppliers/${id}`);
       const { name, code } = response.data;
       setName(name);
       setCode(code);
@@ -27,7 +27,7 @@ const EditSupplier = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:3001/suppliers/${id}`, { name, code });
+      await axios.put(`${process.env.REACT_APP_ROUTE}/suppliers/${id}`, { name, code });
       navigate('/manage/suppliersList');
     } catch (error) {
       console.error('Error updating supplier:', error);

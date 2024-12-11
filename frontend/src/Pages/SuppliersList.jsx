@@ -4,6 +4,7 @@ import axios from "axios";
 import "../css/SuppliersList.scss";
 import { useNavigate } from "react-router-dom";
 
+
 const SupplierList = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -16,7 +17,7 @@ const SupplierList = () => {
 
   const fetchSuppliers = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/suppliers");
+      const response = await axios.get(`${process.env.REACT_APP_ROUTE}/suppliers`);
       setSuppliers(response.data);
     } catch (error) {
       console.error("Error fetching suppliers:", error);
@@ -31,7 +32,7 @@ const SupplierList = () => {
   const handleDeleteConfirm = async () => {
     try {
       await axios.delete(
-        `http://localhost:3001/suppliers/${supplierToDelete._id}`
+        `${process.env.REACT_APP_ROUTE}/suppliers/${supplierToDelete._id}`
       );
       setShowDeleteConfirm(false);
       fetchSuppliers(); // Refresh the list after deletion

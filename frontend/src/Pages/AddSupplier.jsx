@@ -11,7 +11,7 @@ const AddSupplier = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:3001/suppliers/add', { name, code });
+      await axios.post(`${process.env.REACT_APP_ROUTE}/suppliers/add`, { name, code });
       navigate('/manage/suppliersList');
     } catch (error) {
       console.error('Error adding supplier:', error);

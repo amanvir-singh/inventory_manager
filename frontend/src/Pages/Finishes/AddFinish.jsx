@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../../css/Finishes/FinishForm.scss';
+import { AuthContext } from "../../Components/AuthContext";
 
 const AddFinish = () => {
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,32 +20,38 @@ const AddFinish = () => {
     }
   };
 
+  const canAddFinish = user.role === "Editor" || user.role === "Manager" || user.role === "Inventory Associate" || user.role === "admin";
+
   return (
     <div className="finish-form">
       <h1>Add Finish</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Name:</label>
-          <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="code">Code:</label>
-          <input
-            type="text"
-            id="code"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Add Finish</button>
-      </form>
+      {canAddFinish ? (
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="name">Name:</label>
+            <input
+              type="text"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="code">Code:</label>
+            <input
+              type="text"
+              id="code"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit">Add Finish</button>
+        </form>
+      ) : (
+        "You do not have permission to add a Finish. Please contact an administrator for assistance."
+      )}
     </div>
   );
 };

@@ -1,14 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "../../css/Thicknesses/ThicknessesList.scss";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../Components/AuthContext";
 
 const ThicknessesList = () => {
   const [thicknesses, setThicknesses] = useState([]);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [thicknessToDelete, setThicknessToDelete] = useState(null);
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
+  const canPerformActions =
+    user.role === "Editor" ||
+    user.role === "Manager" ||
+    user.role === "Inventory Associate" ||
+    user.role === "admin";
 
   useEffect(() => {
     fetchThicknesses();
@@ -16,7 +23,9 @@ const ThicknessesList = () => {
 
   const fetchThicknesses = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_ROUTE}/thicknesses`);
+      const response = await axios.get(
+        `${process.env.REACT_APP_ROUTE}/thicknesses`
+      );
       setThicknesses(response.data);
     } catch (error) {
       console.error("Error fetching thicknesses:", error);
@@ -43,9 +52,14 @@ const ThicknessesList = () => {
   return (
     <div className="thicknesses-list">
       <h1>Thicknesses</h1>
-      <Link to="/add-thickness" className="add-button">
-        Add Thickness
-      </Link>
+      {canPerformActions ? (
+        <Link to="/add-thickness" className="add-button">
+          Add Thickness
+        </Link>
+      ) : (
+        <></>
+      )}
+
       <table>
         <thead>
           <tr>
@@ -60,18 +74,26 @@ const ThicknessesList = () => {
               <td>{thickness.name}</td>
               <td>{thickness.code}</td>
               <td>
-                <button
-                  onClick={() => navigate(`/edit-thickness/${thickness._id}`)}
-                  className="edit-button"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDeleteClick(thickness)}
-                  className="delete-button"
-                >
-                  Delete
-                </button>
+                {canPerformActions ? (
+                  <>
+                    <button
+                      onClick={() =>
+                        navigate(`/edit-thickness/${thickness._id}`)
+                      }
+                      className="edit-button"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDeleteClick(thickness)}
+                      className="delete-button"
+                    >
+                      Delete
+                    </button>
+                  </>
+                ) : (
+                  "Elevation required to perform Actions"
+                )}
               </td>
             </tr>
           ))}

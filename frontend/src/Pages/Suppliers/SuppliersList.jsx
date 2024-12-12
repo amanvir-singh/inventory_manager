@@ -1,15 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "../../css/Suppliers/SuppliersList.scss";
 import { useNavigate } from "react-router-dom";
-
+import { AuthContext } from "../../Components/AuthContext";
 
 const SupplierList = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [supplierToDelete, setSupplierToDelete] = useState(null);
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
+  const canPerformActions =
+    user.role === "Editor" ||
+    user.role === "Manager" ||
+    user.role === "Inventory Associate" ||
+    user.role === "admin";
 
   useEffect(() => {
     fetchSuppliers();
@@ -17,7 +23,9 @@ const SupplierList = () => {
 
   const fetchSuppliers = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_ROUTE}/suppliers`);
+      const response = await axios.get(
+        `${process.env.REACT_APP_ROUTE}/suppliers`
+      );
       setSuppliers(response.data);
     } catch (error) {
       console.error("Error fetching suppliers:", error);
@@ -44,9 +52,13 @@ const SupplierList = () => {
   return (
     <div className="supplier-list">
       <h1>Suppliers</h1>
-      <Link to="/add-supplier" className="add-button">
-        Add Supplier
-      </Link>
+      {canPerformActions ? (
+        <Link to="/add-supplier" className="add-button">
+          Add Supplier
+        </Link>
+      ) : (
+        <></>
+      )}
       <table>
         <thead>
           <tr>
@@ -61,18 +73,24 @@ const SupplierList = () => {
               <td>{supplier.name}</td>
               <td>{supplier.code}</td>
               <td>
-                <button
-                  onClick={() => navigate(`/edit-supplier/${supplier._id}`)}
-                  className="edit-button"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDeleteClick(supplier)}
-                  className="delete-button"
-                >
-                  Delete
-                </button>
+                {canPerformActions ? (
+                  <>
+                    <button
+                      onClick={() => navigate(`/edit-supplier/${supplier._id}`)}
+                      className="edit-button"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDeleteClick(supplier)}
+                      className="delete-button"
+                    >
+                      Delete
+                    </button>
+                  </>
+                ) : (
+                  "Elevation required to perform Actions"
+                )}
               </td>
             </tr>
           ))}

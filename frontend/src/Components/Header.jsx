@@ -48,19 +48,37 @@ const Header = () => {
             <li>
               <a href="/search">Search</a>
             </li>
-            {isLoggedIn ?(<li className="manage-dropdown">
-            <a href="#" onClick={toggleManageDropdown}>Manage</a>
-            {showManageDropdown && (
-              <ul className="dropdown-menu">
-                <li><a href="/manage/materials">Materials</a></li>
-                <li><a href="/manage/finishesList">Finishes</a></li>
-                <li><a href="/manage/suppliersList">Suppliers</a></li>
-                <li><a href="/manage/thicknessesList">Thicknesses</a></li>
-                <li><a href="/manage/users">Users</a></li>
-                <li><a href="/manage/logs">Logs</a></li>
-              </ul>
+            {isLoggedIn ? (
+              <li className="manage-dropdown">
+                <a href="#" onClick={toggleManageDropdown}>
+                  Manage
+                </a>
+                {showManageDropdown && (
+                  <ul className="dropdown-menu">
+                    <li>
+                      <a href="/manage/materials">Materials</a>
+                    </li>
+                    <li>
+                      <a href="/manage/finishesList">Finishes</a>
+                    </li>
+                    <li>
+                      <a href="/manage/suppliersList">Suppliers</a>
+                    </li>
+                    <li>
+                      <a href="/manage/thicknessesList">Thicknesses</a>
+                    </li>
+                    <li>
+                      <a href="/manage/usersList">Users</a>
+                    </li>
+                    <li>
+                      <a href="/manage/logs">Logs</a>
+                    </li>
+                  </ul>
+                )}
+              </li>
+            ) : (
+              ""
             )}
-          </li>):("")}
           </ul>
         </nav>
 

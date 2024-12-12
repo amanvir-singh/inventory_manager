@@ -17,6 +17,9 @@ import EditFinish from "./Pages/Finishes/EditFinish";
 import ThicknessesList from "./Pages/Thicknesses/ThicknessesList";
 import AddThickness from "./Pages/Thicknesses/AddThickness";
 import EditThickness from "./Pages/Thicknesses/EditThickness";
+import UsersList from "./Pages/Users/UsersList";
+import AddUser from "./Pages/Users/AddUser";
+import EditUser from "./Pages/Users/EditUser";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -37,6 +40,9 @@ root.render(
           <Route path="/manage/thicknessesList" element={<ThicknessesList />} />
           <Route path="/add-thickness" element={<AddThickness />} />
           <Route path="/edit-thickness/:id" element={<EditThickness />} />
+          <Route path="/manage/usersList" element={<UsersList />} />
+          <Route path="/add-user" element={<AddUser />} />
+          <Route path="/edit-user/:id" element={<EditUser />} />
         </Routes>
       </Router>
     </AuthProvider>

@@ -55,7 +55,7 @@ const Header = () => {
                 <li><a href="/manage/materials">Materials</a></li>
                 <li><a href="/manage/finishesList">Finishes</a></li>
                 <li><a href="/manage/suppliersList">Suppliers</a></li>
-                <li><a href="/manage/thicknesses">Thicknesses</a></li>
+                <li><a href="/manage/thicknessesList">Thicknesses</a></li>
                 <li><a href="/manage/users">Users</a></li>
                 <li><a href="/manage/logs">Logs</a></li>
               </ul>

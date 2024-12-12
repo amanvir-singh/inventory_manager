@@ -14,6 +14,9 @@ import EditSupplier from "./Pages/Suppliers/EditSupplier";
 import FinishesList from "./Pages/Finishes/FinishesList";
 import AddFinish from "./Pages/Finishes/AddFinish";
 import EditFinish from "./Pages/Finishes/EditFinish";
+import ThicknessesList from "./Pages/Thicknesses/ThicknessesList";
+import AddThickness from "./Pages/Thicknesses/AddThickness";
+import EditThickness from "./Pages/Thicknesses/EditThickness";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -31,6 +34,9 @@ root.render(
           <Route path="/manage/finishesList" element={<FinishesList />} />
           <Route path="/add-finish" element={<AddFinish />} />
           <Route path="/edit-finish/:id" element={<EditFinish />} />
+          <Route path="/manage/thicknessesList" element={<ThicknessesList />} />
+          <Route path="/add-thickness" element={<AddThickness />} />
+          <Route path="/edit-thickness/:id" element={<EditThickness />} />
         </Routes>
       </Router>
     </AuthProvider>

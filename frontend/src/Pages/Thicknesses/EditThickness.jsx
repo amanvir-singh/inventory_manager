@@ -3,10 +3,12 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../css/Thicknesses/ThicknessForm.scss";
 import { AuthContext } from "../../Components/AuthContext";
+import ErrorModal from "../../Components/ErrorModal";
 
 const EditThickness = () => {
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
+  const [backendError, setBackendError] = useState("");
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
@@ -30,6 +32,7 @@ const EditThickness = () => {
       setCode(code);
     } catch (error) {
       console.error("Error fetching thickness:", error);
+      setBackendError("Error fetching thickness data. Please try again.");
     }
   };
 
@@ -43,11 +46,20 @@ const EditThickness = () => {
       navigate("/manage/thicknessesList");
     } catch (error) {
       console.error("Error updating thickness:", error);
+      setBackendError(
+        error.response?.data?.message ||
+          "An error occurred while updating the thickness."
+      );
     }
   };
 
   return (
     <div>
+      <ErrorModal
+        message={backendError}
+        onClose={() => setBackendError("")}
+        show={!!backendError}
+      />
       {canEditThickness ? (
         <div className="thickness-form">
           <h1>Edit Thickness</h1>

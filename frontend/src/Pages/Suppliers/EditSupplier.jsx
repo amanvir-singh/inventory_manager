@@ -3,10 +3,12 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../css/Suppliers/SupplierForm.scss";
 import { AuthContext } from "../../Components/AuthContext";
+import ErrorModal from "../../Components/ErrorModal";
 
 const EditSupplier = () => {
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
+  const [backendError, setBackendError] = useState("");
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
@@ -30,6 +32,7 @@ const EditSupplier = () => {
       setCode(code);
     } catch (error) {
       console.error("Error fetching supplier:", error);
+      setBackendError("Error fetching supplier data. Please try again.");
     }
   };
 
@@ -43,11 +46,20 @@ const EditSupplier = () => {
       navigate("/manage/suppliersList");
     } catch (error) {
       console.error("Error updating supplier:", error);
+      setBackendError(
+        error.response?.data?.message ||
+          "An error occurred while updating the supplier."
+      );
     }
   };
 
   return (
     <div>
+      <ErrorModal
+        message={backendError}
+        onClose={() => setBackendError("")}
+        show={!!backendError}
+      />
       {canEditSupplier ? (
         <div className="supplier-form">
           <h1>Edit Supplier</h1>

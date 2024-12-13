@@ -3,14 +3,20 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../css/Finishes/FinishForm.scss";
 import { AuthContext } from "../../Components/AuthContext";
+import ErrorModal from "../../Components/ErrorModal";
 
 const EditFinish = () => {
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
+  const [backendError, setBackendError] = useState("");
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
-  const canEditFinish = user.role === "Editor" || user.role === "Manager" || user.role === "Inventory Associate" || user.role === "admin";
+  const canEditFinish =
+    user.role === "Editor" ||
+    user.role === "Manager" ||
+    user.role === "Inventory Associate" ||
+    user.role === "admin";
 
   useEffect(() => {
     fetchFinish();
@@ -26,6 +32,7 @@ const EditFinish = () => {
       setCode(code);
     } catch (error) {
       console.error("Error fetching finish:", error);
+      setBackendError("Error fetching finish data. Please try again.");
     }
   };
 
@@ -39,11 +46,20 @@ const EditFinish = () => {
       navigate("/manage/finishesList");
     } catch (error) {
       console.error("Error updating finish:", error);
+      setBackendError(
+        error.response?.data?.message ||
+          "An error occurred while updating the finish."
+      );
     }
   };
 
   return (
     <div>
+      <ErrorModal
+        message={backendError}
+        onClose={() => setBackendError("")}
+        show={!!backendError}
+      />
       {canEditFinish ? (
         <div className="finish-form">
           <h1>Edit Finish</h1>

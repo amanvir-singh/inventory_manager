@@ -71,7 +71,7 @@ const Header = () => {
                       <a href="/manage/usersList">Users</a>
                     </li>
                     <li>
-                      <a href="/manage/logs">Logs</a>
+                      <a href="/manage/logsList">Logs</a>
                     </li>
                   </ul>
                 )}

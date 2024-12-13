@@ -17,11 +17,26 @@ router.post('/add', async (req, res) => {
   }
 });
 
-// Read all
+// Read all with pagination and limit
 router.get('/', async (req, res) => {
   try {
-    const logs = await Log.find().sort({ time: -1 }); // Sort by time, newest first
-    res.json(logs);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 50;
+    const skip = (page - 1) * limit;
+
+    const logs = await Log.find()
+      .sort({ time: -1 }) // Sort by time, newest first
+      .skip(skip)
+      .limit(limit);
+
+    const total = await Log.countDocuments();
+
+    res.json({
+      logs,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalLogs: total
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -29,7 +29,7 @@ root.render(
       <Router>
         <Header />
         <Routes>
-          <Route path="/" element={<App />} />
+          <Route path="/" element={<WarehouseView/>} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/manage/suppliersList" element={<SupplierList />} />

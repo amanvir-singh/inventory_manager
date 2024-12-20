@@ -21,6 +21,7 @@ import UsersList from "./Pages/Users/UsersList";
 import AddUser from "./Pages/Users/AddUser";
 import EditUser from "./Pages/Users/EditUser";
 import LogsList from "./Pages/Logs/LogsList";
+import { WarehouseView } from "./Pages/WarehouseView";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

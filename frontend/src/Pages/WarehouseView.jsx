@@ -1,67 +1,88 @@
 import React, { useContext, useRef } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Grid, TransformControls } from '@react-three/drei';
+import { Canvas} from '@react-three/fiber';
+import { OrbitControls, Grid, TransformControls, useTexture } from '@react-three/drei';
+
 import { AuthContext } from '../Components/AuthContext';
 
-function Shelf({ position, size, onUpdate }) {
-  const mesh = useRef();
-  const { user } = useContext(AuthContext);
-  const isEditor = user.role === "Editor" || user.role === "Manager";
+function WoodenLog({ position }) {
+  const size = [2/20, 2/20, 61/20]; // Standard log size
 
   return (
-    <mesh ref={mesh} position={position}>
+    <mesh position={position}>
       <boxGeometry args={size} />
-      <meshStandardMaterial color="#8b4513" />
-      {isEditor && (
-        <TransformControls 
-          object={mesh.current} 
-          mode="translate"
-          onObjectChange={(e) => {
-            if (onUpdate) {
-              onUpdate({
-                position: mesh.current.position.toArray(),
-                id: mesh.current.userData.id
-              });
-            }
-          }}
-        />
-      )}
+      <meshStandardMaterial color="#deb887" />
+    </mesh>
+  );
+}
+
+function EdgeDetail({ size, position }) {
+  return (
+    <mesh position={position}>
+      <boxGeometry args={size} />
+      <meshStandardMaterial color="#8B4513" /> {/* Dark brown for edge banding */}
     </mesh>
   );
 }
 
 function Stock({ material, position, onUpdate }) {
-  const mesh = useRef();
+  const group = useRef();
   const { user } = useContext(AuthContext);
   const isEditor = user.role === "Editor" || user.role === "Manager";
+  const woodTexture = useTexture('/WoodTexture.png');
+
+  const stockWidth = material.width / 20;
+  const stockLength = material.length / 20;
+  const stockHeight = 1/20;
+  const logWidth = 2/20;
+  const logSpacing = material.width/80;
+  const stackOffset = 0.01; // Small offset between stacked items
+
+  // Calculate the starting position for the logs to center them
+  const startX = -(stockWidth / 2) + (logWidth / 2) + logSpacing;
+
+  const quantity = material.quantity[0] || 1; // Default to 1 if quantity is not provided
+
+
 
   return (
-    <mesh 
-      ref={mesh} 
-      position={position}
-      userData={{ id: material._id }}
-    >
-      <boxGeometry args={[
-        material.width / 100, 
-        material.length / 100, 
-        0.2
-      ]} />
-      <meshStandardMaterial color="#a0522d" />
+    <group ref={group} position={position}>
+      {/* Wooden logs (only under the first stock item) */}
+      <WoodenLog position={[startX, -2/20, 0]} />
+      <WoodenLog position={[startX + logSpacing, -2/20, 0]} />
+      <WoodenLog position={[startX + 2 * logSpacing, -2/20, 0]} />
+
+      {/* Stack of stock items */}
+      {[...Array(quantity)].map((_, index) => (
+        <group key={index} position={[0, index * (stockHeight + stackOffset), 0]}>
+          {/* Main sheet */}
+          <mesh userData={{ id: `${material._id}-${index}` }}>
+            <boxGeometry args={[stockWidth, stockHeight, stockLength]} />
+            <meshStandardMaterial map={woodTexture} />
+          </mesh>
+          
+          {/* Edge details */}
+          <EdgeDetail size={[stockWidth, stockHeight, 0.005]} position={[0, 0, stockLength/2]} />
+          <EdgeDetail size={[stockWidth, stockHeight, 0.005]} position={[0, 0, -stockLength/2]} />
+          <EdgeDetail size={[0.005, stockHeight, stockLength]} position={[stockWidth/2, 0, 0]} />
+          <EdgeDetail size={[0.005, stockHeight, stockLength]} position={[-stockWidth/2, 0, 0]} />
+        </group>
+      ))}
+
       {isEditor && (
         <TransformControls 
-          object={mesh.current} 
+          object={group.current} 
           mode="translate"
           onObjectChange={(e) => {
             if (onUpdate) {
               onUpdate({
-                position: mesh.current.position.toArray(),
+                position: group.current.position.toArray(),
                 materialId: material._id
               });
             }
           }}
         />
       )}
-    </mesh>
+    </group>
   );
 }
 
@@ -69,18 +90,11 @@ export function WarehouseView() {
   const { user } = useContext(AuthContext);
   const isEditor = user.role === "Editor" || user.role === "Manager";
 
-  // Example data for shelves
-  const exampleShelves = [
-    { id: 1, position: [0, 0, 0], size: [109/20, 19/20, 61/20] },
-    { id: 2, position: [3, 0, 0], size: [2, 1, 1] },
-    { id: 3, position: [0, 0, 3], size: [2, 1, 1] },
-  ];
-
   // Example data for materials
   const exampleMaterials = [
-    { _id: 'm1', width: 50, length: 50, location: [[1, 1, 0]] },
-    { _id: 'm2', width: 75, length: 75, location: [[3.5, 1, 0],[5,10,10]] },
-    { _id: 'm3', width: 60, length: 60, location: [[0.5, 1, 3]] },
+    { _id: 'm1', width: 109, length: 61, location: [[1, 1, 2/20]], quantity: [18] },
+    { _id: 'm2', width: 97, length: 61, location: [[10, 1, 2/20]], quantity: [5] },
+    { _id: 'm3', width: 97, length: 49, location: [[20, 1, 2/20]], quantity: [3] },
   ];
 
   const onUpdatePosition = (updatedItem) => {
@@ -95,15 +109,6 @@ export function WarehouseView() {
         <pointLight position={[10, 10, 10]} />
         
         <Grid infiniteGrid />
-
-        {exampleShelves.map((shelf) => (
-          <Shelf 
-            key={shelf.id}
-            position={shelf.position}
-            size={shelf.size}
-            onUpdate={isEditor ? onUpdatePosition : null}
-          />
-        ))}
 
         {exampleMaterials.map((material) => (
           <Stock 

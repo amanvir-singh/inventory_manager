@@ -20,7 +20,7 @@ import EditThickness from "./Pages/Thicknesses/EditThickness";
 import UsersList from "./Pages/Users/UsersList";
 import AddUser from "./Pages/Users/AddUser";
 import EditUser from "./Pages/Users/EditUser";
-import LogsList from "./Pages/Logs/LogsList";
+//import LogsList from "./Pages/Logs/LogsList";
 import { WarehouseView } from "./Pages/WarehouseView";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -45,7 +45,6 @@ root.render(
           <Route path="/manage/usersList" element={<UsersList />} />
           <Route path="/add-user" element={<AddUser />} />
           <Route path="/edit-user/:id" element={<EditUser />} />
-          <Route path="/manage/logsList" element={<LogsList />} />
         </Routes>
       </Router>
     </AuthProvider>

@@ -21,7 +21,8 @@ import UsersList from "./Pages/Users/UsersList";
 import AddUser from "./Pages/Users/AddUser";
 import EditUser from "./Pages/Users/EditUser";
 //import LogsList from "./Pages/Logs/LogsList";
-import { WarehouseView } from "./Pages/WarehouseView";
+
+import { WarehouseViewWithProvider } from "./Pages/WarehouseViewWithProvider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -30,7 +31,7 @@ root.render(
       <Router>
         <Header />
         <Routes>
-          <Route path="/" element={<WarehouseView/>} />
+          <Route path="/" element={<WarehouseViewWithProvider/>} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/manage/suppliersList" element={<SupplierList />} />

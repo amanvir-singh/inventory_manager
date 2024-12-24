@@ -10,6 +10,7 @@ const logsRoutes = require('./routes/logs');
 const materialsRoutes = require('./routes/materials');
 const suppliersRoutes = require('./routes/suppliers');
 const thicknessesRoutes = require('./routes/thicknessnes');
+const warehouseRoutes = require("./routes/warehouseItems");
 
 
 const app = express();
@@ -34,6 +35,7 @@ app.use('/logs', logsRoutes);
 app.use('/materials', materialsRoutes);
 app.use('/suppliers', suppliersRoutes);
 app.use('/thicknesses', thicknessesRoutes);
+app.use('/warehouse', warehouseRoutes);
 
 
 

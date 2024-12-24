@@ -6,6 +6,7 @@ const supplierSchema = require('./models/suppliers');
 const finishesSchema = require('./models/finishes');
 const thicknessSchema = require('./models/thicknesses');
 const logSchema = require('./models/logs');
+const warehouseItemSchema = require('./models/warehouseItem');
 
 
 
@@ -17,7 +18,8 @@ function initializeModels() {
       suppliers: { name: 'suppliers', schema: supplierSchema },
       finishes: { name: 'finishes', schema: finishesSchema },
       thicknesses: { name: 'thicknesses', schema: thicknessSchema },
-      logs: { name: 'logs', schema: logSchema }
+      logs: { name: 'logs', schema: logSchema },
+      warehouseItem: {name: 'warehouseItem', schema: warehouseItemSchema}
     };
   
     Object.entries(models).forEach(([key, { name, schema }]) => {
@@ -36,7 +38,8 @@ function initializeModels() {
       Supplier: models.suppliers.model,
       Finish: models.finishes.model,
       Thickness: models.thicknesses.model,
-      Log: models.logs.model
+      Log: models.logs.model,
+      WarehouseItem: models.warehouseItem.model 
     };
   }
 
@@ -48,6 +51,7 @@ function initializeModels() {
       supplierSchema,
       finishesSchema,
       thicknessSchema,
-      logSchema
+      logSchema,
+      warehouseItemSchema  
     }
   };

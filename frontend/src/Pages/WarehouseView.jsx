@@ -29,6 +29,7 @@ export function WarehouseProvider({ children }) {
   const [newItemSize, setNewItemSize] = useState(null);
   const [warehouseItems, setWarehouseItems] = useState([]);
   const [placementPosition, setPlacementPosition] = useState([0, 0, 0]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const value = {
     isPlacementActive,
@@ -41,6 +42,8 @@ export function WarehouseProvider({ children }) {
     setWarehouseItems,
     placementPosition,
     setPlacementPosition,
+    isLoading,
+    setIsLoading
   };
 
   return (
@@ -240,6 +243,8 @@ function WarehouseCanvas() {
     setIsPlacementActive,
     setPlacementMode,
     setNewItemSize,
+    isLoading,
+    setIsLoading
   } = useContext(WarehouseContext);
 
   const handleMouseMove = (event) => {
@@ -287,8 +292,16 @@ function WarehouseCanvas() {
       }
     }
   };
+  useEffect(() => {
+    console.log("isLoading in WarehouseView:", isLoading);
+  }, [isLoading]);
+  if (isLoading) {
+    console.log("Outside")
+    return null;
+  }
 
   return (
+    
     <Canvas
       camera={{ position: [30, 15, 5] }}
       onPointerMove={handleMouseMove}
@@ -304,7 +317,7 @@ function WarehouseCanvas() {
           sectionSize={3}
           position={[0, -0.01, 0]}
         />
-
+        {console.log("Inside Here: ",warehouseItems)}
         {warehouseItems.map((item, index) => (
           <Stock
             key={index}
@@ -335,30 +348,31 @@ function WarehouseCanvas() {
 
 export function WarehouseView() {
   const { user } = useContext(AuthContext);
-  const { setWarehouseItems } = useContext(WarehouseContext);
+  const { setWarehouseItems, warehouseItems, isLoading, setIsLoading } = useContext(WarehouseContext);
   const isEditor = user.role === "Editor" || user.role === "Manager";
 
   useEffect(() => {
     const fetchWarehouseLayout = async () => {
       try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_ROUTE}/warehouse/layout`
-        );
+        const response = await axios.get(`${process.env.REACT_APP_ROUTE}/warehouse/layout`);
         setWarehouseItems(response.data);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching warehouse layout:", error);
+        setIsLoading(false);
       }
     };
-
     fetchWarehouseLayout();
   }, []);
+  useEffect(()=>{console.log("Set Loading", isLoading)},[isLoading])
 
   return (
     <WarehouseProvider>
-      <div style={{ width: "100%", height: "80vh", position: "relative" }}>
-        <WarehouseCanvas />
-        <OptionsPanel />
-      </div>
-    </WarehouseProvider>
+    <div style={{ width: "100%", height: "80vh", position: "relative" }}>
+    <WarehouseCanvas />
+
+          <OptionsPanel />
+    </div>
+  </WarehouseProvider>
   );
 }

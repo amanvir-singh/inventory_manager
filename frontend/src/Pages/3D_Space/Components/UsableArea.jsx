@@ -1,7 +1,7 @@
 export function UsableArea({ item }) {
   const SCALE_FACTOR = 1 / 12; // 1 unit = 1 foot
   return (
-    <mesh position={item.position.map((coord) => coord * SCALE_FACTOR)}>
+    <mesh position={item.position.map((coord) => coord)}>
       <boxGeometry
         args={[
           item.size.width * SCALE_FACTOR,

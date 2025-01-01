@@ -5,6 +5,7 @@ import axios from "axios";
 import { WarehouseContext } from "../WarehouseProvider";
 import { WarehouseCanvas } from "./WarehouseCanvas";
 import { OptionsPanel } from "./OptionsPanel";
+import { ViewCube } from "./ViewCube";
 
 const offsetSpace = 4;
 
@@ -37,6 +38,7 @@ export function WarehouseView() {
       <div style={{ width: "100%", height: "80vh", position: "relative" }}>
         <WarehouseCanvas />
         <OptionsPanel />
+        <ViewCube/>
       </div>
     );
   }

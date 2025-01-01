@@ -291,12 +291,15 @@ function WarehouseContent() {
 }
 
 export function WarehouseCanvas() {
-  const { isLoading } = useContext(WarehouseContext);
+  const { isLoading, cameraPosition } = useContext(WarehouseContext);
+  useEffect(() => {
+    console.log("Position Changed: ", cameraPosition);
+  },[cameraPosition])
 
   if (isLoading) return null;
-
+  
   return (
-    <Canvas camera={{ position: [30, 15, 5] }}>
+    <Canvas key={cameraPosition.join(',')} camera={{ position: cameraPosition }}>
       <Suspense fallback={null}>
         <WarehouseContent />
       </Suspense>

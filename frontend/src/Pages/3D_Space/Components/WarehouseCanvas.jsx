@@ -2,38 +2,21 @@ import React, {
   useContext,
   useRef,
   Suspense,
-  useState,
   useEffect,
   useCallback,
 } from "react";
 import { Canvas, useThree, useFrame } from "@react-three/fiber";
-import { OrbitControls, Grid, Html } from "@react-three/drei";
+import { OrbitControls, Grid } from "@react-three/drei";
 import { WarehouseContext } from "../WarehouseProvider";
 import { Wall } from "./Wall";
 import { UsableArea } from "./UsableArea";
 import { NonUsableArea } from "./NonUsableArea";
 import { Stock } from "./Stock";
 import { PlacementIndicator } from "./PlacementIndicator";
-import axios from "axios";
 import * as THREE from "three";
-import "../../../css/3D_Space/WarehouseCanvas.scss";
 
 const SCALE_FACTOR = 1 / 12;
 const GRID_SIZE = 1 * SCALE_FACTOR;
-
-function ConfirmationPopup({ onConfirm, onCancel }) {
-
-  
-  return (
-    <div className="confirmation-popup">
-      <p>Are you sure you want to save this position?</p>
-      <div className="button-container">
-        <button onClick={onConfirm}>Yes</button>
-        <button onClick={onCancel}>No</button>
-      </div>
-    </div>
-  );
-}
 
 function WarehouseContent() {
   const { camera } = useThree();
@@ -42,38 +25,16 @@ function WarehouseContent() {
     placementMode,
     newItemSize,
     warehouseItems,
-    setWarehouseItems,
     placementPosition,
     setPlacementPosition,
-    setIsPlacementActive,
-    setPlacementMode,
-    setNewItemSize,
+    setShowConfirmation,
+    cameraLocked,
+    setCameraLocked,
+    currentPosition,
+    setCurrentPosition,
   } = useContext(WarehouseContext);
 
-  const [currentPosition, setCurrentPosition] = useState([0, 0, 0]);
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [cameraLocked, setCameraLocked] = useState(false);
   const meshRef = useRef();
-
-  const handleRotate = (event) => {
-
-    if (event && event.type === 'click') {
-      event.stopPropagation();
-      if (newItemSize) {
-        setNewItemSize((prevSize) => ({
-          ...prevSize,
-          width: prevSize.length,
-          length: prevSize.width,
-        }));
-        setPlacementPosition((prevPosition) => [
-          prevPosition[0],
-          prevPosition[1],
-          prevPosition[2]
-        ]);
-      }
-    }
-  };
- 
 
   const handleCameraPosition = useCallback(() => {
     if (cameraLocked && camera) {
@@ -137,51 +98,6 @@ function WarehouseContent() {
     });
   };
 
-  const handleSave = async () => {
-    if (
-      !isPlacementActive ||
-      !placementMode ||
-      !newItemSize ||
-      !placementPosition
-    )
-      return;
-
-      const newItem = {
-        type: placementMode,
-        size: {...newItemSize}, // Use the spread operator to create a new object
-        position: placementPosition,
-      };
-
-    try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_ROUTE}/warehouse/layout`,
-        newItem
-      );
-      setWarehouseItems((prevItems) => [...prevItems, response.data]);
-      setIsPlacementActive(false);
-      setPlacementMode(null);
-      setNewItemSize(null);
-      setCurrentPosition([0, 0, 0]);
-      setShowConfirmation(false);
-      setCameraLocked(false);
-    } catch (error) {
-      console.error("Error saving warehouse item:", error);
-    }
-  };
-
-  const handleCancel = () => {
-    setIsPlacementActive(false);
-    setPlacementMode(null);
-    setNewItemSize(null);
-    setCurrentPosition([0, 0, 0]);
-    setCameraLocked(false);
-    setShowConfirmation(false);
-  };
-
-  const handleConfirmCancel = () => {
-    setShowConfirmation(false);
-  };
- 
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (isPlacementActive) {
@@ -266,26 +182,6 @@ function WarehouseContent() {
           <meshBasicMaterial visible={false} />
         </mesh>
       )}
-      {showConfirmation && (
-        <Html center>
-          <ConfirmationPopup
-            onConfirm={handleSave}
-            onCancel={handleConfirmCancel}
-          />
-        </Html>
-      )}
-      {isPlacementActive && (
-        <Html center>
-          <div className="button-container">
-            <button className="rotate-button" onClick={handleRotate}>
-              Rotate
-            </button>
-            <button className="cancel-button" onClick={handleCancel}>
-              Cancel
-            </button>
-          </div>
-        </Html>
-      )}
     </>
   );
 }
@@ -294,12 +190,15 @@ export function WarehouseCanvas() {
   const { isLoading, cameraPosition } = useContext(WarehouseContext);
   useEffect(() => {
     console.log("Position Changed: ", cameraPosition);
-  },[cameraPosition])
+  }, [cameraPosition]);
 
   if (isLoading) return null;
-  
+
   return (
-    <Canvas key={cameraPosition.join(',')} camera={{ position: cameraPosition }}>
+    <Canvas
+      key={cameraPosition.join(",")}
+      camera={{ position: cameraPosition }}
+    >
       <Suspense fallback={null}>
         <WarehouseContent />
       </Suspense>

@@ -2,22 +2,34 @@
     background-color: white;
     border: 2px solid #ccc;
     border-radius: 5px;
-    padding: 10px;
+    padding: 5px;
     position: absolute;
-    top: 50%;
+    top: 30%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1000;
-    width: 200px;
-    height: 100px;
-  
+    width: 320px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+
     p {
-      margin-bottom: 15px;
+      margin-bottom: 5px;
+      text-align: center;
+      width: 100%;
+      font-size: large;
+      font-weight:bold;
     }
   
     .button-container {
       display: flex;
-      justify-content: space-evenly;
+      justify-content: space-around;
+      width: 100%;
+      margin-bottom: 5px;
+      
+  
   
       button {
         padding: 5px 15px;
@@ -25,6 +37,7 @@
         border-radius: 3px;
         cursor: pointer;
         transition: background-color 0.3s;
+        font-size: large;
   
         &:first-child {
           background-color: #4CAF50;
@@ -47,12 +60,16 @@
     }
   }
   
-  .button-container {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    display: flex;
-    gap: 10px;
+    .button-container-rotate-cancel {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      justify-content:space-between;
+      gap: 10px;
+      max-width: 320px;
+    
   
     button {
       padding: 5px 15px;
@@ -61,6 +78,7 @@
       border-radius: 3px;
       cursor: pointer;
       transition: background-color 0.3s;
+      font-size: larger;
     }
   }
   

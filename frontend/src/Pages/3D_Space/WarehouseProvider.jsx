@@ -12,6 +12,9 @@ export function WarehouseProvider({ children }) {
   const [placementPosition, setPlacementPosition] = useState([0, 0, 0]);
   const [isLoading, setIsLoading] = useState(true);
   const [cameraPosition, setCameraPosition] = useState([30, 15, 5]);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [cameraLocked, setCameraLocked] = useState(false);
+  const [currentPosition, setCurrentPosition] = useState([0, 0, 0]);
 
   const value = {
     isPlacementActive,
@@ -28,6 +31,12 @@ export function WarehouseProvider({ children }) {
     setIsLoading,
     cameraPosition,
     setCameraPosition,
+    showConfirmation,
+    setShowConfirmation,
+    cameraLocked,
+    setCameraLocked,
+    currentPosition,
+    setCurrentPosition,
   };
 
   return (

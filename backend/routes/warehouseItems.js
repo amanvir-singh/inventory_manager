@@ -54,12 +54,10 @@ router.put('/layout/:id', async (req, res) => {
 // Delete a warehouse item
 router.delete('/layout/:id', async (req, res) => {
   try {
-    const item = await WarehouseItem.findById(req.params.id);
-    if (item == null) {
+    const item = await WarehouseItem.findByIdAndDelete(req.params.id);
+    if (!item) {
       return res.status(404).json({ message: 'Cannot find item' });
     }
-
-    await item.remove();
     res.json({ message: 'Deleted Item' });
   } catch (error) {
     res.status(500).json({ message: error.message });

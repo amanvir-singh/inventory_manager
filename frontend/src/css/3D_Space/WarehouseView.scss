@@ -81,6 +81,24 @@
       font-size: larger;
     }
   }
+
+    .delete-button {
+      position: absolute;
+      bottom: 20px;
+      left: 80px;
+      padding: 5px 15px;
+      background-color: #f44336;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-size: larger;
+  
+      &:hover {
+        background-color: #da190b;
+      }
+    }
   
   .cancel-button {
     background-color: #f44336;

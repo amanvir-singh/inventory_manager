@@ -1,7 +1,7 @@
-export function Wall({ item }) {
+export function Wall({ item, onClick }) {
   const SCALE_FACTOR = 1 / 12; // 1 unit = 1 foot
   return (
-    <mesh position={item.position.map((coord) => coord)}>
+    <mesh position={item.position.map((coord) => coord)} onClick={onClick}>
       <boxGeometry
         args={[
           item.size.width * SCALE_FACTOR,

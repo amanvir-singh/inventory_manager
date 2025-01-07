@@ -1,3 +1,4 @@
+import axios from "axios";
 import { createContext, useState } from "react";
 
 // Create a new context
@@ -15,6 +16,7 @@ export function WarehouseProvider({ children }) {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [cameraLocked, setCameraLocked] = useState(false);
   const [currentPosition, setCurrentPosition] = useState([0, 0, 0]);
+  const [deleteMode, setDeleteMode] = useState(false);
 
   const value = {
     isPlacementActive,
@@ -37,6 +39,8 @@ export function WarehouseProvider({ children }) {
     setCameraLocked,
     currentPosition,
     setCurrentPosition,
+    deleteMode,
+    setDeleteMode,
   };
 
   return (

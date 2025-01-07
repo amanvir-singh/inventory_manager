@@ -14,6 +14,7 @@ import { NonUsableArea } from "./NonUsableArea";
 import { Stock } from "./Stock";
 import { PlacementIndicator } from "./PlacementIndicator";
 import * as THREE from "three";
+import { deleteItem } from "./WarehouseView";
 
 const SCALE_FACTOR = 1 / 12;
 const GRID_SIZE = 1 * SCALE_FACTOR;
@@ -25,6 +26,7 @@ function WarehouseContent() {
     placementMode,
     newItemSize,
     warehouseItems,
+    setWarehouseItems,
     placementPosition,
     setPlacementPosition,
     setShowConfirmation,
@@ -32,6 +34,8 @@ function WarehouseContent() {
     setCameraLocked,
     currentPosition,
     setCurrentPosition,
+    deleteMode,
+    setDeleteMode,
   } = useContext(WarehouseContext);
 
   const meshRef = useRef();
@@ -42,6 +46,17 @@ function WarehouseContent() {
       camera.lookAt(currentPosition[0], 0, currentPosition[2]);
     }
   }, [cameraLocked, camera, currentPosition]);
+
+  const handleItemClick = useCallback(
+    (item, setWarehouseItems, setDeleteMode) => {
+      console.log("This is Delete");
+      if (deleteMode) {
+        // Call a function to delete the item
+        deleteItem(item, setWarehouseItems, setDeleteMode);
+      }
+    },
+    [deleteMode]
+  );
 
   useEffect(() => {
     if (isPlacementActive) {
@@ -127,6 +142,10 @@ function WarehouseContent() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isPlacementActive]);
 
+  useEffect(() => {
+    console.log(deleteMode);
+  }, [deleteMode]);
+
   return (
     <>
       <ambientLight intensity={0.5} />
@@ -140,11 +159,35 @@ function WarehouseContent() {
       {warehouseItems.map((item, index) => {
         switch (item.type) {
           case "wall":
-            return <Wall key={index} item={item} />;
+            return (
+              <Wall
+                key={index}
+                item={item}
+                onClick={() =>
+                  handleItemClick(item, setWarehouseItems, setDeleteMode)
+                }
+              />
+            );
           case "usableArea":
-            return <UsableArea key={index} item={item} />;
+            return (
+              <UsableArea
+                key={index}
+                item={item}
+                onClick={() =>
+                  handleItemClick(item, setWarehouseItems, setDeleteMode)
+                }
+              />
+            );
           case "nonUsableArea":
-            return <NonUsableArea key={index} item={item} />;
+            return (
+              <NonUsableArea
+                key={index}
+                item={item}
+                onClick={() =>
+                  handleItemClick(item, setWarehouseItems, setDeleteMode)
+                }
+              />
+            );
           default:
             return (
               <Stock

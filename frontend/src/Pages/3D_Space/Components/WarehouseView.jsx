@@ -22,6 +22,21 @@ function ConfirmationPopup({ onConfirm, onCancel }) {
   );
 }
 
+export async function deleteItem(item, setWarehouseItems, setDeleteMode) {
+  try {
+    console.log(item);
+    await axios.delete(
+      `${process.env.REACT_APP_ROUTE}/warehouse/layout/${item._id}`
+    );
+    setWarehouseItems((prevItems) =>
+      prevItems.filter((i) => i._id !== item._id)
+    );
+    setDeleteMode(false);
+  } catch (error) {
+    console.error("Error deleting warehouse item:", error);
+  }
+}
+
 export function WarehouseView() {
   const { user } = useContext(AuthContext);
   const {
@@ -40,6 +55,8 @@ export function WarehouseView() {
     showConfirmation,
     placementMode,
     placementPosition,
+    deleteMode,
+    setDeleteMode,
   } = useContext(WarehouseContext);
   const isEditor = user.role === "Editor" || user.role === "Manager";
   const fetchWarehouseLayout = async () => {
@@ -130,6 +147,12 @@ export function WarehouseView() {
         <WarehouseCanvas />
         <OptionsPanel />
         <ViewCube />
+        <button
+          className="delete-button"
+          onClick={() => setDeleteMode(!deleteMode)}
+        >
+          {deleteMode ? "Cancel Delete" : "Delete Item"}
+        </button>
         {showConfirmation && (
           <ConfirmationPopup
             onConfirm={handleSave}
